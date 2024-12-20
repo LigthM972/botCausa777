@@ -1,5 +1,8 @@
 import discord
 from discord.ext import commands
+import os, random
+import requests
+
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix='$', intents=intents)
@@ -12,14 +15,19 @@ async def hello(ctx):
 @bot.command()
 async def heh(ctx, count_heh = 5):
     await ctx.send("he" * count_heh)
-@bot.group()
-async def cool(ctx):
-    """Says if a user is cool.
+@bot.command()
+async def mem(ctx):
+    img_name = random.choice(os.listdir('Images'))
+    with open(f'Images/{img_name}', 'rb') as f:
+        picture = discord.File(f)
+        await ctx.send(file=picture)
 
-    In reality this just checks if a subcommand is being invoked.
-    """
-    if ctx.invoked_subcommand is None:
-        await ctx.send(f'No, {ctx.subcommand_passed} is not cool')
+@bot.command()
+async def notice(ctx):
+    not_name = random.choice(os.listdir('notice'))
+    with open(f'notice/{not_name}', 'rb') as f:
+        ambiente = discord.File(f)
+        await ctx.send(file=ambiente)
 
 
 bot.run("token")
